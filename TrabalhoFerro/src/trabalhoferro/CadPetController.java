@@ -26,6 +26,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -112,9 +113,7 @@ public class CadPetController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         // TODO
-        
-        
-        if(!Banco.conectar())
+         if(!Banco.conectar())
             System.exit(0);
         preencher("");
         inicializar();
@@ -238,10 +237,19 @@ public class CadPetController implements Initializable
     @FXML
     private void evt_click(MouseEvent event) // ERRO
     {
+        
        DALespecie esp = new DALespecie();
-       ObservableList <Especie> listaEspecie = null;
-       listaEspecie = FXCollections.observableArrayList();
-       listaEspecie.add(esp.getUm(tb_Tabela.getSelectionModel().getSelectedItem().getCod()));
+       ObservableList <Especie> listaEspecie;
+       ObservableList <Racas> listaRaca;
+       
+       
+       
+        int cod = tb_Tabela.getSelectionModel().getSelectedItem().getCod();
+        DALespecie dal = new DALespecie();
+        Especie especie = dal.getUm(cod);
+        listaEspecie = FXCollections.observableArrayList();
+        listaEspecie.add(especie);       
+        
         pnl_Cadastro.setVisible(true);
         tb_codigo.setText(""+(tb_Tabela.getSelectionModel().getSelectedItem().getCod()));
         tb_nome.setText(tb_Tabela.getSelectionModel().getSelectedItem().getNome());
@@ -249,6 +257,7 @@ public class CadPetController implements Initializable
         tb_peso.setText(""+tb_Tabela.getSelectionModel().getSelectedItem().getPeso());
         tb_sexo.setText(""+tb_Tabela.getSelectionModel().getSelectedItem().getSexo());
         System.out.println(tb_Tabela.getSelectionModel().getSelectedItem().getRaca().getNome());
+        System.out.println(tb_Tabela.getSelectionModel().getSelectedItem().getEspecie().getNome());
         cbb_especie.setItems(listaEspecie);
         cbb_raca.setId(""+tb_Tabela.getSelectionModel().getSelectedItem().getRaca().getNome());
     }
