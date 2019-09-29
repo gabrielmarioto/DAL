@@ -42,5 +42,16 @@ public class TelaController implements Initializable
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    private void evt_Especie(ActionEvent event) throws IOException
+    {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("CadEspecie.fxml"));        
+        Scene scene = new Scene(root);
+        stage.setTitle("Cadastro de Especie");
+        stage.setScene(scene);
+        stage.show();
+    }
     
 }

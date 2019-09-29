@@ -7,17 +7,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="" focusTraversable="true" orientation="VERTICAL" prefHeight="350.0" prefWidth="386.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="trabalhoferro.TelaController">
+<SplitPane dividerPositions="" focusTraversable="true" orientation="VERTICAL" prefHeight="472.0" prefWidth="645.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="trabalhoferro.TelaController">
   <items>
-    <VBox prefHeight="200.0" prefWidth="100.0">
+    <VBox prefHeight="348.0" prefWidth="597.0">
       <children>
-        <HBox prefHeight="25.0" prefWidth="384.0">
+        <HBox fillHeight="true" prefHeight="25.0" prefWidth="384.0">
           <children>
-            <MenuBar prefWidth="384.0">
+            <MenuBar prefWidth="643.0">
               <menus>
                 <Menu mnemonicParsing="false" text="_Cadastro">
                   <items>
                     <MenuItem mnemonicParsing="true" onAction="#evt_Raca" text="_Raças" />
+                    <MenuItem mnemonicParsing="true" onAction="#evt_Especie" text="_Especie" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
