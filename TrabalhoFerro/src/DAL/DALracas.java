@@ -38,23 +38,19 @@ public class DALracas
     {
         return Banco.getCon().manipular("delete from raca where rac_cod = "+r.getCod());
     }
-    public List <Racas> get(String filtro)
+    public List <Racas> get(String filtro) //se filtro vazio, retorna todas
     {
-        List <Racas> raca= new ArrayList();
-        String sql = "select * from raca";
+        List <Racas> racas=new ArrayList();
+        String sql="select * from raca";
         if(!filtro.isEmpty())
-            sql += "where "+filtro;
-        ResultSet rs = Banco.getCon().consultar(sql);
-        try
-        {
-            if(rs.next())
-                raca.add(new Racas(rs.getInt("rac_cod"),rs.getString("rac_nome")));
+            sql+=" where rac_nome like upper('%"+filtro+"%')";
+        ResultSet rs=Banco.getCon().consultar(sql);
+        try{
+           while(rs.next())
+              racas.add(new Racas(rs.getInt("rac_cod"),rs.getString("rac_nome")));
         }
-        catch(SQLException ex)
-        {
-            
-        }
-        return raca;
+        catch(Exception e){}
+        return racas;
     }
     public Racas getUm(int cod)
     {   

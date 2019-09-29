@@ -19,6 +19,7 @@
                   <items>
                     <MenuItem mnemonicParsing="true" onAction="#evt_Raca" text="_Raças" />
                     <MenuItem mnemonicParsing="true" onAction="#evt_Especie" text="_Especie" />
+                    <MenuItem mnemonicParsing="true" onAction="#evt_Pet" text="_Pet" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
