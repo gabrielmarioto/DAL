@@ -9,6 +9,8 @@ import DAL.DALracas;
 import banco.Banco;
 import entidades.Racas;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -80,17 +82,9 @@ public class CadRacaController implements Initializable
     {
         // TODO
         col_nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        col_codigo.setCellValueFactory(new PropertyValueFactory<>("cod"));
-        tb_Tabela.setRowFactory(tv -> new TableRow<Racas>()
-        {
-            @Override
-            public void updateItem(Racas item, boolean empty)
-            {
-                super.updateItem(item, empty);
-            }
-        ;
-        });        
-        Banco.conectar();
+        col_codigo.setCellValueFactory(new PropertyValueFactory<>("cod"));               
+        if(!Banco.conectar())
+            System.exit(0);
         abrir();
         inicializar();
     }
@@ -113,7 +107,15 @@ public class CadRacaController implements Initializable
     @FXML
     private void evt_Alterar(ActionEvent event)
     {
-
+        btn_Alterar.setVisible(true);
+        DALracas dal = new DALracas();
+        if(JOptionPane.showConfirmDialog(null, "Confirma a alteração?") == JOptionPane.OK_OPTION)
+        {
+            Racas r = new Racas(Integer.parseInt(tb_codigo.getText()),tb_nome.getText());
+            dal.alterar(r);  
+        }    
+        preencherTabela(arquivos);
+        abrir();        
     }
     @FXML
     private void evt_Apagar(ActionEvent event)
@@ -122,14 +124,14 @@ public class CadRacaController implements Initializable
         if(JOptionPane.showConfirmDialog(null, "Confirma a exclusão?") == JOptionPane.OK_OPTION)
         {
             Racas r = new Racas (Integer.parseInt(tb_codigo.getText()),tb_nome.getText());
-            dal.apagar(r);   
-            preencherTabela(arquivos);
-        }                
+            dal.apagar(r);                        
+        }   
+        preencherTabela(arquivos);
+        abrir();
     }
     private void preencherTabela(List arquivos)
     {
-        tb_Tabela.setItems(FXCollections.observableArrayList(arquivos));
-        tb_Tabela.refresh();
+        tb_Tabela.setItems(FXCollections.observableArrayList(arquivos));        
     }
 
     private void abrir()
@@ -149,7 +151,6 @@ public class CadRacaController implements Initializable
         {
         }
         preencherTabela(arquivos);
-
     }
 
     @FXML
@@ -157,8 +158,7 @@ public class CadRacaController implements Initializable
     {
 
         Racas r = null;
-        DALracas dal = new DALracas();
-        
+        DALracas dal = new DALracas();        
         try
         {
             if (tb_codigo.getText().length() != 0)
@@ -190,10 +190,15 @@ public class CadRacaController implements Initializable
     @FXML
     private void evt_Pesquisar(ActionEvent event)
     {
+        List <Racas> tela = new ArrayList();
         DALracas r = new DALracas();
-        r.get(null);
-        Racas raca = new Racas();
-
+        if(tb_pesquisa.getText().length() != 0)
+        {
+            tela.add(r.getUm(Integer.parseInt(tb_pesquisa.getText())));
+            tb_Tabela.setItems(FXCollections.observableArrayList(tela));  
+        }
+        else
+            abrir();
     }
 
     @FXML
@@ -202,6 +207,12 @@ public class CadRacaController implements Initializable
         pnl_Cadastro.setVisible(true);
         tb_codigo.setText(""+(tb_Tabela.getSelectionModel().getSelectedItem().getCod()));
         tb_nome.setText(tb_Tabela.getSelectionModel().getSelectedItem().getNome());
+    }
+
+    private void evt_Atualizar(ActionEvent event)
+    {
+        tb_Tabela.refresh();
+        abrir();
     }
 
 

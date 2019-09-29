@@ -21,8 +21,9 @@ public class DALracas
 {
     public boolean salvar(Racas r)
     {
-        String sql = "insert into raca values (default,'#1') ";
-        sql = sql.replace("#1",r.getNome());        
+        String sql = "insert into raca values ('#1','#2') ";
+        sql = sql.replace("#1",""+r.getCod());
+        sql = sql.replace("#2", r.getNome());
         return Banco.getCon().manipular(sql);
     }
 
