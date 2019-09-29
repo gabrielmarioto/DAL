@@ -2,13 +2,42 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trabalhoferro.TelaController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
-</AnchorPane>
+<SplitPane dividerPositions="" focusTraversable="true" orientation="VERTICAL" prefHeight="350.0" prefWidth="386.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="trabalhoferro.TelaController">
+  <items>
+    <VBox prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <HBox prefHeight="25.0" prefWidth="384.0">
+          <children>
+            <MenuBar prefWidth="384.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="_Cadastro">
+                  <items>
+                    <MenuItem mnemonicParsing="true" onAction="#evt_Raca" text="_Raças" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+              <HBox.margin>
+                <Insets />
+              </HBox.margin>
+            </MenuBar>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </items>
+</SplitPane>

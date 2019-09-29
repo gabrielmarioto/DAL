@@ -5,6 +5,7 @@
  */
 package trabalhoferro;
 
+import banco.Banco;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,6 +36,7 @@ public class TrabalhoFerro extends Application
     public static void main(String[] args)
     {
         launch(args);
+        Banco.conectar();
     }
     
 }

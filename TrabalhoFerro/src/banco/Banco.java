@@ -5,8 +5,6 @@
  */
 package banco;
 
-import banco.Conexao;
-
 /**
  *
  * @author GABRIEL

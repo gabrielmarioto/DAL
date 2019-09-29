@@ -5,8 +5,6 @@ package banco;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,44 +15,37 @@ import java.sql.Statement;
  *
  * @author GABRIEL
  */
-class Conexao
+public class Conexao
 {
+
     private Connection connect;
     private String erro;
+
     public Conexao()
     {
-        erro = "";
         connect = null;
+        erro = "";
     }
-    public boolean conectar (String local, String banco, String usuario, String senha)
+
+    public boolean conectar(String local, String banco, String usuario, String senha)
     {
-        boolean conectado = false;
+        boolean executou = false;
         try
         {
             String url = local + banco;
             connect = DriverManager.getConnection(url, usuario, senha);
-            conectado = true;
-        }
-        catch(SQLException ex)
+            executou = true;
+        } catch (SQLException ex)
         {
-            erro = "Conexão com banco de dados! " + ex.toString();
-        }
-        catch(Exception e)
+            erro = "Erro: " + ex.toString();
+        } catch (Exception e)
         {
-            erro = "Outro erro!" + e.toString();
+            erro = "Erro: " + e.toString();
         }
-        return conectado;
+        return executou;
     }
-    public String getErro()
-    {
-        return erro;
-    }
-    public boolean getConexao()
-    {
-        return (connect != null);
-    }
-    
-    public boolean manipular(String sql) //INSERIR, ALTERAR E EXCLUIR
+
+    public boolean manipular(String sql)
     {
         boolean executou = false;
         try
@@ -62,49 +53,62 @@ class Conexao
             Statement state = connect.createStatement();
             int result = state.executeUpdate(sql);
             state.close();
-            if(result >= 1)
-                executou = true; // CONEXAO COM SUCESSO
-            
-        }
-        catch ( SQLException ex) // ERRO NA CONEXAO
+            if (result >= 1)
+            {
+                executou = true;
+            }
+        } catch (SQLException ex)
         {
-            erro = "Erro: " + ex.toString() ;
+            erro = "Erro: " + ex.toString();
+        } catch (Exception e)
+        {
+            erro = "Erro: " + e.toString();
         }
         return executou;
     }
-    public ResultSet consultar(String sql) // SELECT
+
+    public ResultSet consultar(String sql)
     {
         ResultSet rs = null;
-        
         try
         {
             Statement state = connect.createStatement();
             rs = state.executeQuery(sql);
-        }
-        catch( SQLException ex)
+        } catch (SQLException ex)
         {
             erro = "Erro: " + ex.toString();
-            rs = null;
+        } catch (Exception e)
+        {
+            erro = "Erro: " + e.toString();
         }
-        
+
         return rs;
     }
-    
-    public int getMaxPK(String tabela, String chave)
+
+    public boolean getEstadoConexao()
+    {
+        return (connect != null);
+    }
+
+    public String getMessageErro()
+    {
+        return erro;
+    }
+
+    public int getMaxPK(String chave, String tabela)
     {
         String sql = "select max ("+chave+") from "+tabela;
-        
         int max = 0;
-        
         ResultSet rs = consultar(sql);
         try
         {
-            if(rs.next())
-                max = rs.getInt(1);
-        }
-        catch(SQLException ex)
+            if (rs.next())
+            {
+                max += rs.getInt(1);
+            }
+        } catch (SQLException sqlex)
         {
-            erro = "Erro: "+ ex.toString();
+            erro = "Erro: " + sqlex.toString();
             max = -1;
         }
         return max;
