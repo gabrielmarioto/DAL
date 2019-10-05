@@ -78,6 +78,7 @@ public class CadEspecieController implements Initializable
         col_codigo.setCellValueFactory(new PropertyValueFactory<>("cod"));               
         if(!Banco.conectar())
             System.exit(0);
+        System.out.println(Banco.getCon().getMessageErro());
         abrir();
         inicializar();
     }    

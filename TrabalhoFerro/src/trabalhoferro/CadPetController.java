@@ -25,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -34,6 +35,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -102,24 +104,29 @@ public class CadPetController implements Initializable
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
-    private List <Racas> racas = new ArrayList<>();
-    private List <Especie> especies = new ArrayList<>();
-    private List <Pet> arquivos = new ArrayList();
-    
+    private List<Racas> racas = new ArrayList<>();
+    private List<Especie> especies = new ArrayList<>();
+    private List<Pet> arquivos = new ArrayList();
+    @FXML
+    private DatePicker dp_datanasc;
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         // TODO
-         if(!Banco.conectar())
+        if (!Banco.conectar())
             System.exit(0);
+        JOptionPane.showMessageDialog(null, "Cadastro de PET com defeitos, script do banco foi feito com erro!");
         preencher("");
         inicializar();
         carregarItems();
-    }    
-     public void inicializar()
+    }
+
+    public void inicializar()
     {
         btn_Confirmar.setVisible(false);
         pnl_Cadastro.setVisible(false);
@@ -132,51 +139,56 @@ public class CadPetController implements Initializable
         cbb_especie.valueProperty().set(null);
         cbb_raca.valueProperty().set(null);
     }
-     private void preencherTabela(List arquivos)
+
+    private void preencherTabela(List arquivos)
     {
-        tb_Tabela.setItems(FXCollections.observableArrayList(arquivos));        
+        tb_Tabela.setItems(FXCollections.observableArrayList(arquivos));
     }
-    private void carregarItems() // SEI LÁ 2
-    {        
+
+    private void carregarItems()
+    {
         DALracas DAL = new DALracas();
         DALespecie DALesp = new DALespecie();
 
         ObservableList<Racas> listaRacas;
         ObservableList<Especie> listaEspecies;
-        
+
         racas = DAL.get("");
-        especies = DALesp.get("");      
-        listaRacas = FXCollections.observableArrayList(racas);   
+        especies = DALesp.get("");
+        listaRacas = FXCollections.observableArrayList(racas);
         listaEspecies = FXCollections.observableArrayList(especies);
-        cbb_raca.setItems(listaRacas);        
+        cbb_raca.setItems(listaRacas);
         cbb_especie.setItems(listaEspecies);
     }
-    private void preencher(String filtro) // SEI LA QUE PORRA É ESSA
+
+    private void preencher(String filtro)
     {
         DALpets dal = new DALpets();
         DALespecie especie = new DALespecie();
         DALracas racas = new DALracas();
         arquivos = dal.get(filtro);
         ObservableList<Pet> listaPets;
-        listaPets = FXCollections.observableArrayList();
-        if(!listaPets.isEmpty())
-            listaPets.clear();
-        for(Pet p : arquivos)
+        listaPets = FXCollections.observableArrayList(arquivos);
+        if (!listaPets.isEmpty())
         {
-            Pet pet = new Pet(p.getCod(), p.getNome(), p.getPeso(), p.getCor(),p.getDataNasc(), p.getSexo(),especie.getUm(p.getCod()), racas.getUm(p.getCod()));
+            listaPets.clear();
+        }
+        for (Pet p : arquivos)
+        {
+            Pet pet = new Pet(p.getCod(), p.getNome(), p.getPeso(), p.getCor(), p.getDataNasc(), p.getSexo(), especie.getUm(p.getCod()), racas.getUm(p.getCod()));
             listaPets.add(p);
         }
         col_nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        col_codigo.setCellValueFactory(new PropertyValueFactory<>("cod")); 
+        col_codigo.setCellValueFactory(new PropertyValueFactory<>("cod"));
         col_peso.setCellValueFactory(new PropertyValueFactory<>("peso"));
         col_cor.setCellValueFactory(new PropertyValueFactory<>("cor"));
         col_sexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
         col_dtnasc.setCellValueFactory(new PropertyValueFactory<>("datanasc"));
         col_raca.setCellValueFactory(new PropertyValueFactory<>("raca"));
         col_especie.setCellValueFactory(new PropertyValueFactory<>("especie"));
-        
         tb_Tabela.setItems(listaPets);
     }
+
     @FXML
     private void evt_Novo(ActionEvent event)
     {
@@ -198,27 +210,35 @@ public class CadPetController implements Initializable
     private void evt_Confirmar(ActionEvent event) // FAZER
     {
         Pet p = null;
+        Especie esp = null;
+        Racas rac = null;
         DALpets dal = new DALpets();
         try
         {
-            if(tb_codigo.getText().length() != 0 )
+            if (tb_codigo.getText().length() != 0)
             {
-                if(tb_nome.getText().length() != 0 )
+                if (tb_nome.getText().length() != 0)
                 {
-                    if(tb_cor.getText().length() != 0)
+                    if (tb_cor.getText().length() != 0)
                     {
-                        if(tb_peso.getText().length() != 0)
+                        if (tb_peso.getText().length() != 0)
                         {
-                            if(tb_sexo.getText().length() != 0)
+                            if (tb_sexo.getText().length() != 0)
                             {
-                              //  if(cbb_especie.get)
+                                  p = new Pet(Integer.parseInt(tb_codigo.getText()),tb_nome.getText(),Double.parseDouble(tb_peso.getText()), tb_cor.getText(), dp_datanasc.getValue(),
+                                  tb_sexo.getText().charAt(0),esp = new Especie (cbb_especie.getValue().getCod(),cbb_especie.getValue().getNome()), rac = new Racas(cbb_raca.getValue().getCod(),cbb_raca.getValue().getNome()));
+                                  dal.salvar(p);
+                                  arquivos.add(p);
+                                  inicializar();
                             }
                         }
                     }
                 }
             }
+        } catch (Exception ex)
+        {
         }
-        catch(Exception ex){}
+        preencherTabela(arquivos);
     }
 
     @FXML
@@ -226,40 +246,48 @@ public class CadPetController implements Initializable
     {
         preencher("");
         carregarItems();
-        
+        inicializar();
     }
 
     @FXML
     private void evt_Pesquisar(ActionEvent event)
     {
+        List <Pet> tela = new ArrayList();
+        DALpets dal = new DALpets();
+        if(tb_pesquisar.getText().length() != 0)
+        {
+            tela.add(dal.getUm(Integer.parseInt(tb_pesquisar.getText())));            
+            tb_Tabela.setItems(FXCollections.observableArrayList(tela));
+        }
+        else
+        {
+            carregarItems();
+            preencher("");
+        }
     }
 
     @FXML
-    private void evt_click(MouseEvent event) // ERRO
+    private void evt_click(MouseEvent event) 
     {
         
-       DALespecie esp = new DALespecie();
-       ObservableList <Especie> listaEspecie;
-       ObservableList <Racas> listaRaca;
-       
-       
-       
-        int cod = tb_Tabela.getSelectionModel().getSelectedItem().getCod();
         DALespecie dal = new DALespecie();
-        Especie especie = dal.getUm(cod);
-        listaEspecie = FXCollections.observableArrayList();
-        listaEspecie.add(especie);       
-        
+        DALracas r = new DALracas();
+        ObservableList<Especie> listaEspecie;
+        ObservableList<Racas> listaRaca;
+
+        racas = r.get("");
+        especies = dal.get("");
+        listaEspecie = FXCollections.observableArrayList(especies);
+        listaRaca = FXCollections.observableArrayList(racas);
         pnl_Cadastro.setVisible(true);
-        tb_codigo.setText(""+(tb_Tabela.getSelectionModel().getSelectedItem().getCod()));
+        tb_codigo.setText("" + (tb_Tabela.getSelectionModel().getSelectedItem().getCod()));
         tb_nome.setText(tb_Tabela.getSelectionModel().getSelectedItem().getNome());
         tb_cor.setText(tb_Tabela.getSelectionModel().getSelectedItem().getCor());
-        tb_peso.setText(""+tb_Tabela.getSelectionModel().getSelectedItem().getPeso());
-        tb_sexo.setText(""+tb_Tabela.getSelectionModel().getSelectedItem().getSexo());
-        System.out.println(tb_Tabela.getSelectionModel().getSelectedItem().getRaca().getNome());
-        System.out.println(tb_Tabela.getSelectionModel().getSelectedItem().getEspecie().getNome());
+        tb_peso.setText("" + tb_Tabela.getSelectionModel().getSelectedItem().getPeso());
+        tb_sexo.setText("" + tb_Tabela.getSelectionModel().getSelectedItem().getSexo());
+        dp_datanasc.setValue(tb_Tabela.getSelectionModel().getSelectedItem().getDataNasc());
         cbb_especie.setItems(listaEspecie);
-        cbb_raca.setId(""+tb_Tabela.getSelectionModel().getSelectedItem().getRaca().getNome());
+        cbb_raca.setItems(listaRaca);
     }
-    
+
 }

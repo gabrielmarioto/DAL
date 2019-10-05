@@ -59,7 +59,7 @@ public class DALracas
         ResultSet rs=Banco.getCon().consultar(sql);
         try{
            if(rs.next())
-              raca = new Racas(cod,rs.getString("rac_nome"));
+              raca = new Racas(rs.getInt("rac_cod"),rs.getString("rac_nome"));
         }
         catch(Exception e){}
         return raca;

@@ -62,7 +62,7 @@ public class DALespecie
         ResultSet rs=Banco.getCon().consultar(sql);
         try{
            if(rs.next())
-              especie = new Especie(cod,rs.getString("esp_nome"));
+              especie = new Especie(rs.getInt("esp_cod"),rs.getString("esp_nome"));
         }
         catch(Exception e){}
         return especie;

@@ -1,44 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="" focusTraversable="true" orientation="VERTICAL" prefHeight="472.0" prefWidth="645.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="trabalhoferro.TelaController">
+<SplitPane focusTraversable="true" orientation="VERTICAL" prefHeight="472.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trabalhoferro.TelaController">
   <items>
     <VBox prefHeight="348.0" prefWidth="597.0">
       <children>
-        <HBox fillHeight="true" prefHeight="25.0" prefWidth="384.0">
-          <children>
-            <MenuBar prefWidth="643.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="_Cadastro">
-                  <items>
-                    <MenuItem mnemonicParsing="true" onAction="#evt_Raca" text="_Raças" />
-                    <MenuItem mnemonicParsing="true" onAction="#evt_Especie" text="_Especie" />
-                    <MenuItem mnemonicParsing="true" onAction="#evt_Pet" text="_Pet" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-              <HBox.margin>
-                <Insets />
-              </HBox.margin>
-            </MenuBar>
-          </children>
+        <HBox alignment="CENTER" fillHeight="true" prefHeight="25.0" prefWidth="384.0" style="-fx-background-color: orange;">
+               <children>
+                  <Label text="Menu Principal de Cadastro de Pets">
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
         </HBox>
+            <HBox alignment="CENTER" prefHeight="41.0" prefWidth="643.0" style="-fx-background-color: #4F4F4F;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#evt_Raca" text="Cadastrar Raça">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#evt_Especie" text="Cadastrar Especie">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#evt_Pet" text="Cadastrar Pet">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" prefHeight="408.0" prefWidth="643.0">
+               <children>
+                  <Label text="Trabalho Desenvolvido Por:">
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Gabriel Marioto - RA: 101629427">
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Santiago Biasi - RA: 101729928">
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
       </children>
     </VBox>
   </items>
