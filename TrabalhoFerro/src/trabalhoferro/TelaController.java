@@ -16,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -25,13 +27,15 @@ import javafx.stage.Stage;
  */
 public class TelaController implements Initializable
 {
+
+    @FXML
+    private ImageView imgview;
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         // TODO
     }    
-
     @FXML
     private void evt_Raca(ActionEvent event) throws IOException
     {
@@ -40,7 +44,7 @@ public class TelaController implements Initializable
         Scene scene = new Scene(root);
         stage.setTitle("Cadastro de Racas");
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
     }
 
     @FXML
@@ -51,7 +55,7 @@ public class TelaController implements Initializable
         Scene scene = new Scene(root);
         stage.setTitle("Cadastro de Especie");
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
     }
 
     @FXML
@@ -62,7 +66,7 @@ public class TelaController implements Initializable
         Scene scene = new Scene(root);
         stage.setTitle("Cadastro de Pet");
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
     }
     
 }

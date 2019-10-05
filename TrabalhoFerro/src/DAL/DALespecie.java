@@ -42,7 +42,7 @@ public class DALespecie
         List <Especie> especie= new ArrayList();
         String sql = "select * from especie";
         if(!filtro.isEmpty())
-            sql += "where "+filtro;
+            sql+=" where rac_nome like upper('%"+filtro+"%')";
         ResultSet rs = Banco.getCon().consultar(sql);
         try
         {

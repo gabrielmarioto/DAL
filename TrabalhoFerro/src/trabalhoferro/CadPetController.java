@@ -13,6 +13,7 @@ import entidades.Especie;
 import entidades.Pet;
 import entidades.Racas;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,8 +120,11 @@ public class CadPetController implements Initializable
     {
         // TODO
         if (!Banco.conectar())
+        {
             System.exit(0);
+        }
         JOptionPane.showMessageDialog(null, "Cadastro de PET com defeitos, script do banco foi feito com erro!");
+        dp_datanasc.setValue(LocalDate.now());
         preencher("");
         inicializar();
         carregarItems();
@@ -199,11 +203,48 @@ public class CadPetController implements Initializable
     @FXML
     private void evt_Alterar(ActionEvent event)
     {
+        btn_Alterar.setVisible(true);
+        DALpets dal = new DALpets();
+        Especie esp = null;
+        Racas rac = null;
+        try
+        {
+            if (JOptionPane.showConfirmDialog(null, "Confirma a alteração?") == JOptionPane.OK_OPTION)
+            {
+                Pet p = new Pet(Integer.parseInt(tb_codigo.getText()), tb_nome.getText(), Double.parseDouble(tb_peso.getText()), tb_cor.getText(), dp_datanasc.getValue(),
+                        tb_sexo.getText().charAt(0), esp = new Especie(cbb_especie.getValue().getCod(), cbb_especie.getValue().getNome()), rac = new Racas(cbb_raca.getValue().getCod(), cbb_raca.getValue().getNome()));
+                dal.alterar(p);
+            }
+        } catch (Exception ex)
+        {
+            System.out.println(ex.toString());
+        }
+        carregarItems();
+        preencher("");
+        inicializar();
     }
 
     @FXML
     private void evt_Apagar(ActionEvent event)
     {
+        Especie esp = null;
+        Racas rac = null;
+        DALpets dal = new DALpets();
+        try
+        {
+            if (JOptionPane.showConfirmDialog(null, "Confirma a exclusão?") == JOptionPane.OK_OPTION)
+            {
+                Pet p = new Pet(Integer.parseInt(tb_codigo.getText()), tb_nome.getText(), Double.parseDouble(tb_peso.getText()), tb_cor.getText(), dp_datanasc.getValue(),
+                        tb_sexo.getText().charAt(0), esp = new Especie(cbb_especie.getValue().getCod(), cbb_especie.getValue().getNome()), rac = new Racas(cbb_raca.getValue().getCod(), cbb_raca.getValue().getNome()));
+                dal.apagar(p);
+            }
+        } catch (Exception ex)
+        {
+            System.out.println(ex.toString());
+        }
+        carregarItems();
+        preencher("");
+        inicializar();
     }
 
     @FXML
@@ -213,6 +254,7 @@ public class CadPetController implements Initializable
         Especie esp = null;
         Racas rac = null;
         DALpets dal = new DALpets();
+        String hoje = LocalDate.now().toString();
         try
         {
             if (tb_codigo.getText().length() != 0)
@@ -225,11 +267,14 @@ public class CadPetController implements Initializable
                         {
                             if (tb_sexo.getText().length() != 0)
                             {
-                                  p = new Pet(Integer.parseInt(tb_codigo.getText()),tb_nome.getText(),Double.parseDouble(tb_peso.getText()), tb_cor.getText(), dp_datanasc.getValue(),
-                                  tb_sexo.getText().charAt(0),esp = new Especie (cbb_especie.getValue().getCod(),cbb_especie.getValue().getNome()), rac = new Racas(cbb_raca.getValue().getCod(),cbb_raca.getValue().getNome()));
-                                  dal.salvar(p);
-                                  arquivos.add(p);
-                                  inicializar();
+                                if (dp_datanasc.getValue().toString().compareTo(hoje) <= 0)
+                                {
+                                    p = new Pet(Integer.parseInt(tb_codigo.getText()), tb_nome.getText(), Double.parseDouble(tb_peso.getText()), tb_cor.getText(), dp_datanasc.getValue(),
+                                            tb_sexo.getText().charAt(0), esp = new Especie(cbb_especie.getValue().getCod(), cbb_especie.getValue().getNome()), rac = new Racas(cbb_raca.getValue().getCod(), cbb_raca.getValue().getNome()));
+                                    dal.salvar(p);
+                                    arquivos.add(p);
+                                    inicializar();
+                                }
                             }
                         }
                     }
@@ -252,14 +297,13 @@ public class CadPetController implements Initializable
     @FXML
     private void evt_Pesquisar(ActionEvent event)
     {
-        List <Pet> tela = new ArrayList();
+        List<Pet> tela = new ArrayList();
         DALpets dal = new DALpets();
-        if(tb_pesquisar.getText().length() != 0)
+        if (tb_pesquisar.getText().length() != 0)
         {
-            tela.add(dal.getUm(Integer.parseInt(tb_pesquisar.getText())));            
+            tela.add(dal.getUm(Integer.parseInt(tb_pesquisar.getText())));
             tb_Tabela.setItems(FXCollections.observableArrayList(tela));
-        }
-        else
+        } else
         {
             carregarItems();
             preencher("");
@@ -267,18 +311,8 @@ public class CadPetController implements Initializable
     }
 
     @FXML
-    private void evt_click(MouseEvent event) 
+    private void evt_click(MouseEvent event)
     {
-        
-        DALespecie dal = new DALespecie();
-        DALracas r = new DALracas();
-        ObservableList<Especie> listaEspecie;
-        ObservableList<Racas> listaRaca;
-
-        racas = r.get("");
-        especies = dal.get("");
-        listaEspecie = FXCollections.observableArrayList(especies);
-        listaRaca = FXCollections.observableArrayList(racas);
         pnl_Cadastro.setVisible(true);
         tb_codigo.setText("" + (tb_Tabela.getSelectionModel().getSelectedItem().getCod()));
         tb_nome.setText(tb_Tabela.getSelectionModel().getSelectedItem().getNome());
@@ -286,8 +320,8 @@ public class CadPetController implements Initializable
         tb_peso.setText("" + tb_Tabela.getSelectionModel().getSelectedItem().getPeso());
         tb_sexo.setText("" + tb_Tabela.getSelectionModel().getSelectedItem().getSexo());
         dp_datanasc.setValue(tb_Tabela.getSelectionModel().getSelectedItem().getDataNasc());
-        cbb_especie.setItems(listaEspecie);
-        cbb_raca.setItems(listaRaca);
+        cbb_especie.setValue(tb_Tabela.getSelectionModel().getSelectedItem().getEspecie());
+        cbb_raca.setValue(tb_Tabela.getSelectionModel().getSelectedItem().getRaca());
     }
 
 }
